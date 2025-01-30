@@ -103,10 +103,6 @@ input.item-quantity {
 	width: 45px;
 }
 
-.weapon-item {
-	width: 380px;
-}
-
 .weapon-section {
 	flex: 1;
 }
@@ -117,7 +113,6 @@ input.item-quantity {
 }
 
 .item-info {
-	width: 380px;
 	background-color: lightgray;
 }
 

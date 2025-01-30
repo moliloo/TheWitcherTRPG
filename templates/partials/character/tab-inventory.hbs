@@ -48,11 +48,70 @@
             </div>
         </div>
 
-        <h2>{{localize "WITCHER.Inventory.Weapons"}}
+        <div class="weapon-header">
+            <h2>{{localize "WITCHER.Inventory.Weapons"}}</h2>
             <a class="add-item" data-itemType="weapon">
                 <i class="fas fa-plus"></i>
             </a>
-        </h2>
+        </div>
+
+        <ol class="weapon-list item-table item-list">
+            <li class="weapon-label">
+                <span></span>
+                <span>{{localize "WITCHER.table.Name"}}</span>
+                <span>{{localize "WITCHER.table.Damage"}}</span>
+                <span>{{localize "WITCHER.table.Reliability"}}</span>
+                <span>{{localize "WITCHER.table.Quantity"}}</span>
+            </li>
+            {{#each weapons as |weapon id|}}
+            <li class="item weapon-item" data-item-id="{{weapon._id}}" data-type="weapon">
+                <div class="weapon-details">
+                    <div style="text-align:left;" class="item-weapon-display">
+                        {{> "systems/TheWitcherTRPG/templates/partials/item-image.hbs" item=weapon}}
+                    </div>
+                    <div><a class="item-roll">{{weapon.name}}</a></div>
+                    <div>{{weapon.system.damage}}</div>
+                    <div class="flex">
+                        <input class="inline-edit reliable-info" data-field="system.reliable" type="text" value="{{weapon.system.reliable}}" data-dtype="Number" />
+                        /
+                        {{weapon.system.maxReliability}}
+                    </div>
+                    <input class="inline-edit item-quantity" data-field="system.quantity" type="text" value="{{weapon.system.quantity}}" data-dtype="Number" />
+                    <div class="weapon-controls">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+                <div class="item-info invisible">
+                    <div class="item-description">
+                        {{weapon.system.description}}
+                    </div>
+                    <div class="item-tags">
+                        <div class="label-info">
+                            <b>{{localize "WITCHER.Weapon.Type"}}: </b>
+                            {{weapon.system.type.text}}
+                        </div>
+                        {{#if weapon.system.isAmmo}}
+                            <div>
+                                <b>{{localize "WITCHER.Weapon.Ammunition"}}</b>
+                            </div>
+                        {{/if}}
+                        {{#unless weapon.system.isAmmo}}
+                            <b>{{localize "WITCHER.Weapon.Hands.title"}}: </b>
+                            {{ localize (lookup ../config.weapon.hands weapon.system.hands) }}
+                        {{/unless}}
+                        <div class="label-info">
+                            <b>{{localize "WITCHER.Weapon.Short.Concealment"}}: </b>
+                            {{ localize (lookup ../config.Concealment weapon.system.conceal) }}
+                        </div>
+                        <div class="label-info">
+                            <b>{{localize "WITCHER.Item.Weight"}}: </b>
+                            {{weapon.system.weight}}
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
         <table class="item-table item-list">
             <tr>
                 <td></td>

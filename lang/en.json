@@ -458,6 +458,7 @@
             "rangedMeleeBonus": "Ranged Melee Bonus",
             "rangedMeleeBonusHint": "Some ranged weapons also apply the melee bonus",
             "isAmmunition": "Is an ammunition",
+            "Ammunition": "Ammunition",
             "isThrowable": "Is a throwable weapon",
             "Broken": "Your weapon is now broken",
             "onlyDmg": "Roll Only Damages",
