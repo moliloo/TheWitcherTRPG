@@ -9,10 +9,45 @@ table th {
     border: solid black 1px;
 }
 
+.enhancement-img {
+    height: 30px;
+    width: 30px;
+}
+
+.enhancement-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.enhancement-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.enhancement-effects-name {
+    margin: 5px 0;
+}
+
+.item-tags {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.item-tag,
+.label-info {
+    background-color: goldenrod;
+    color: #2f2306;
+    padding: 5px;
+    border-radius: 5px;
+    border: gold 2px groove;
+}
+
 .item-enhancement {
     height: 30px;
     width: 30px;
-    margin: 5px;
 }
 
 .no-margin {
@@ -93,18 +128,20 @@ table th {
     flex-direction: column;
     margin: 0;
     list-style-type: none;
-    gap: 20px;
+    gap: 10px;
 }
 
 .weapon-label {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: 1fr 2fr repeat(4, 1fr);
     gap: 20px;
 }
 
 .weapon-details {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: 1fr 2fr repeat(4, 1fr);
+    align-items: center;
+    justify-content: center;
     gap: 20px;
 }
 
@@ -112,3 +149,7 @@ table th {
     flex-direction: column;
 }
 
+.reliable-details {
+    display: flex;
+    align-items: center;
+}

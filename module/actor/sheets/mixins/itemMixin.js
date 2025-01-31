@@ -241,6 +241,14 @@ export let itemMixin = {
         editor.toggleClass('invisible');
     },
 
+    _onEnhancementInfo(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let section = event.currentTarget.closest('.weapon-enhancement');
+        let editor = $(section).find('.enhancement-info');
+        editor.toggleClass('invisible');
+    },
+
     async _onItemRoll(event) {
         this.actor.useItem(event.currentTarget.closest('.item').dataset.itemId, {
             alt: event?.altKey,
@@ -284,9 +292,12 @@ export let itemMixin = {
         html.find('.item-spell-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-substance-display').on('click', this._onSubstanceDisplay.bind(this));
 
+        html.find('.enhancement-label').on('click', this._onEnhancementInfo.bind(this));
+
         html.find('.spell-display').on('click', this._onSpellDisplay.bind(this));
 
         html.find('.item-roll').on('click', this._onItemRoll.bind(this));
         html.find('.spell-roll').on('click', this._onItemRoll.bind(this));
     }
 };
+
