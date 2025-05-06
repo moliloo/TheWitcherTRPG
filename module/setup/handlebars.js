@@ -12,12 +12,17 @@ export async function preloadHandlebarsTemplates() {
         'systems/TheWitcherTRPG/templates/partials/character/tab-profession.hbs',
         'systems/TheWitcherTRPG/templates/partials/character/tab-background.hbs',
         'systems/TheWitcherTRPG/templates/partials/character/tab-inventory.hbs',
-        'systems/TheWitcherTRPG/templates/partials/character/tab-inventory-diagrams.hbs',
-        'systems/TheWitcherTRPG/templates/partials/character/tab-inventory-valuables.hbs',
-        'systems/TheWitcherTRPG/templates/partials/character/tab-inventory-mounts.hbs',
-        'systems/TheWitcherTRPG/templates/partials/character/tab-inventory-runes-glyphs.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-alchemical.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-components.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-weapons.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-armors.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-diagrams.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-valuables.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-mounts.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/inventory-templates/tab-inventory-runes-glyphs.hbs',
         'systems/TheWitcherTRPG/templates/partials/character/substances.hbs',
         'systems/TheWitcherTRPG/templates/partials/character/tab-magic.hbs',
+        'systems/TheWitcherTRPG/templates/partials/character/tab-magic-spells.hbs',
         'systems/TheWitcherTRPG/templates/sheets/actor/partials/character/tab-effects.hbs',
 
         'systems/TheWitcherTRPG/templates/partials/crit-wounds-table.hbs',
@@ -131,5 +136,67 @@ export async function registerHandelbarHelpers() {
 
     Handlebars.registerHelper('has', (value, set) => {
         return set.has(value);
+    });
+
+    Handlebars.registerHelper("armorPartsInfo", function (armor) {
+        const location = armor.location;
+    
+        // Mapeamento de ícones e nomes das partes
+        const parts = [
+            { key: "head", name: game.i18n.localize('WITCHER.Location.Head'), stopping: "headStopping", max: "headMaxStopping", icon: "fa-helmet-safety" },
+            { key: "torso", name: game.i18n.localize('WITCHER.Location.Torso'), stopping: "torsoStopping", max: "torsoMaxStopping", icon: "fa-shirt" },
+            { key: "leftHand", name: game.i18n.localize('WITCHER.Location.leftArm'), stopping: "leftArmStopping", max: "leftArmMaxStopping", icon: "fa-hand" },
+            { key: "rightHand", name: game.i18n.localize('WITCHER.Location.rightArm'), stopping: "rightArmStopping", max: "rightArmMaxStopping", icon: "fa-hand-back-fist" },
+            { key: "leftLeg", name: game.i18n.localize('WITCHER.Location.rightLeg'), stopping: "leftLegStopping", max: "leftLegMaxStopping", icon: "fa-shoe-prints" },
+            { key: "rightLeg", name: game.i18n.localize('WITCHER.Location.leftLeg'), stopping: "rightLegStopping", max: "rightLegMaxStopping", icon: "fa-shoe-prints" },
+            { key: "shield", name: game.i18n.localize('WITCHER.Actor.Shield'), stopping: "reliability", max: "reliabilityMax", icon: "fa-shield" }
+            
+        ];
+    
+        const fullCover = location === "FullCover";
+        const protections = {
+            Head: ["head"],
+            Torso: ["torso", "leftHand", "rightHand"],
+            Leg: ["leftLeg", "rightLeg"],
+            Shield: ["shield"]
+        };
+    
+        const isCovered = (partKey) => {
+            if (fullCover) return partKey !== "shield"; // Não mostra o escudo em FullCover
+            return protections[location]?.includes(partKey);
+        };
+    
+        return parts
+            .filter(part => isCovered(part.key))
+            .map(part => {
+                const current = armor[part.stopping] || 0;
+                const max = armor[part.max] || 0;
+                const percentage = max > 0 ? Math.round((current / max) * 100) : 0;
+    
+                let color = "gray";
+                if (percentage > 66) color = "green";
+                else if (percentage > 33) color = "orange";
+                else color = "red";
+    
+                return {
+                    ...part,
+                    current,
+                    max,
+                    percentage,
+                    color,
+                    tooltip: `${part.name}: ${current} / ${max}`
+                };
+            });
+    });
+
+    Handlebars.registerHelper("syncUuidDiagrams", function (craftingComponents) {
+        return craftingComponents.map(component => {
+            if (!component.uuid) return component;
+            return { id: component.id, ...fromUuidSync(component.uuid), quantity: component.quantity } ?? component;
+        });
+    });
+    
+    Handlebars.registerHelper('getValue', function(obj, key) {
+        return obj[key];
     });
 }

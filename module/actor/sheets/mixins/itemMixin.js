@@ -84,6 +84,22 @@ export let itemMixin = {
         await item.update({ 'system.equipped': !item.system.equipped });
     },
 
+    async _onItemCarried(event) {
+        event.preventDefault();
+        let itemId = event.currentTarget.closest('.item').dataset.itemId;
+        let item = this.actor.items.get(itemId);
+
+        await item.update({ 'system.isCarried': !item.system.isCarried });
+    },
+
+    async _onItemLearned(event) {
+        event.preventDefault();
+        let itemId = event.currentTarget.closest('.item').dataset.itemId;
+        let item = this.actor.items.get(itemId);
+
+        await item.update({ 'system.learned': !item.system.learned });
+    },
+
     _onItemInlineEdit(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -269,6 +285,14 @@ export let itemMixin = {
         editor.toggleClass('invisible');
     },
 
+    _openContainerList(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let section = event.currentTarget.closest('.stored-item');
+        let editor = $(section).find('.stored-item-info');
+        editor.toggleClass('invisible');
+    },
+
     async _onItemRoll(event) {
         this.actor.useItem(event.currentTarget.closest('.item').dataset.itemId, {
             alt: event?.altKey,
@@ -298,6 +322,8 @@ export let itemMixin = {
     itemListener(html) {
         html.find('.add-item').on('click', this._onItemAdd.bind(this));
         html.find('.item-equip').on('click', this._onItemEquip.bind(this));
+        html.find('.item-carried').on('click', this._onItemCarried.bind(this));
+        html.find('.item-learned').on('click', this._onItemLearned.bind(this));
         html.find('.item-edit').on('click', this._onItemEdit.bind(this));
         html.find('.item-show').on('click', this._onItemShow.bind(this));
         html.find('.item-delete').on('click', this._onItemDelete.bind(this));
@@ -310,12 +336,13 @@ export let itemMixin = {
         html.find('.weapon-list-display').on('click', this._onDisplayList.bind(this));
 
         html.find('.item-weapon-display').on('click', this._onItemDisplayInfo.bind(this));
-        html.find('.item-armor-display').on('click', this._onItemDisplayInfo.bind(this));
+        html.find('.item-display-info').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-valuable-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-spell-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-substance-display').on('click', this._onSubstanceDisplay.bind(this));
 
         html.find('.enhancement-label').on('click', this._onEnhancementInfo.bind(this));
+        html.find('.stored-item-label').on('click', this._openContainerList.bind(this));
 
         html.find('.spell-display').on('click', this._onSpellDisplay.bind(this));
 

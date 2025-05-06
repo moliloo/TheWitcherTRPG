@@ -35,6 +35,9 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
         this._prepareSubstances(context);
         this._prepareAlchemy(context);
         this._prepareValuables(context);
+        context.alchemyComponentsList = this._prepareAlchemyComponentsList(context)
+
+        console.log(context.alchemyComponentsList)
 
         context.system.general.lifeEvents = Object.entries(context.system.general.lifeEvents).map(([key, value]) => ({
             key,
@@ -154,6 +157,20 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
 
         context.mounts = items.filter(i => i.type == 'mount');
         context.mountAccessories = items.filter(i => i.type == 'valuable' && i.system.type == 'mount-accessories');
+    }
+
+    _prepareAlchemyComponentsList(context) {
+        return [
+            { key: 'vitriol', label: 'Vitriol', image: 'vitriol.png', count: context.vitriolCount },
+            { key: 'rebis', label: 'Rebis', image: 'rebis.png', count: context.rebisCount },
+            { key: 'aether', label: 'Aether', image: 'aether.png', count: context.aetherCount },
+            { key: 'quebrith', label: 'Quebrith', image: 'quebrith.png', count: context.quebrithCount },
+            { key: 'hydragenum', label: 'Hydragenum', image: 'hydragenum.png', count: context.hydragenumCount },
+            { key: 'vermilion', label: 'Vermilion', image: 'vermilion.png', count: context.vermilionCount },
+            { key: 'sol', label: 'Sol', image: 'sol.png', count: context.solCount },
+            { key: 'caelum', label: 'Caelum', image: 'caelum.png', count: context.caelumCount },
+            { key: 'fulgur', label: 'Fulgur', image: 'fulgur.png', count: context.fulgurCount },
+          ];
     }
 
     async _alchemyCraft(event) {
