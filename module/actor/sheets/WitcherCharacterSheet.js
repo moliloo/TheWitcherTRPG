@@ -37,8 +37,6 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
         this._prepareValuables(context);
         context.alchemyComponentsList = this._prepareAlchemyComponentsList(context)
 
-        console.log(context.alchemyComponentsList)
-
         context.system.general.lifeEvents = Object.entries(context.system.general.lifeEvents).map(([key, value]) => ({
             key,
             ...value

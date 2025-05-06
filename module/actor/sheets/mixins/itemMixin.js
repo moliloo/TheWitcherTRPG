@@ -1,3 +1,5 @@
+import { WITCHER } from '../../../setup/config.js';
+
 export let itemMixin = {
     async _onDropItem(event, data) {
         if (!this.actor.isOwner) return false;
@@ -319,6 +321,25 @@ export let itemMixin = {
         });
     },
 
+    async _onItemMessage(event) {
+        let itemId = event.currentTarget.closest('.list-item').dataset.itemId;
+        let item = this.actor.items.get(itemId);
+        const dialogData = {
+            item: item,
+            type: item.type,
+            config: WITCHER
+        }
+
+        ChatMessage.create({
+            content: await renderTemplate(
+                'systems/TheWitcherTRPG/templates/chat/item/item-description.hbs',
+                dialogData
+            ),
+            speaker: ChatMessage.getSpeaker({ actor: game.actors.getName(this.actor.name) }),
+            type: CONST.CHAT_MESSAGE_TYPES.IC
+        });
+    },
+
     itemListener(html) {
         html.find('.add-item').on('click', this._onItemAdd.bind(this));
         html.find('.item-equip').on('click', this._onItemEquip.bind(this));
@@ -348,6 +369,7 @@ export let itemMixin = {
 
         html.find('.item-roll').on('click', this._onItemRoll.bind(this));
         html.find('.spell-roll').on('click', this._onItemRoll.bind(this));
+        html.find('.item-chat').on('click', this._onItemMessage.bind(this));
     }
 };
 

@@ -39,17 +39,17 @@
                 </div>
                 <div class="invisible item-info list-item-info">
                     <div class="item-tags">
-                            {{#if diagram.system.isFormulae}}
-                                <span class="item-tag" data-tooltip="{{localize "WITCHER.Diagram.alchemyDC"}}">
-                                    <i class="fa-solid fa-dice-d20"></i>
-                                    {{diagram.system.alchemyDC}}
-                                </span>
-                            {{else}}
-                                <span class="item-tag" data-tooltip="{{localize "WITCHER.Diagram.craftingDC"}}">
-                                    <i class="fa-solid fa-dice-d20"></i>
-                                    {{diagram.system.craftingDC}}
-                                </span>
-                            {{/if}}
+                        {{#if diagram.system.isFormulae}}
+                            <span class="item-tag" data-tooltip="{{localize "WITCHER.Diagram.alchemyDC"}}">
+                                <i class="fa-solid fa-dice-d20"></i>
+                                {{diagram.system.alchemyDC}}
+                            </span>
+                        {{else}}
+                            <span class="item-tag" data-tooltip="{{localize "WITCHER.Diagram.craftingDC"}}">
+                                <i class="fa-solid fa-dice-d20"></i>
+                                {{diagram.system.craftingDC}}
+                            </span>
+                        {{/if}}
                         <span class="item-tag" data-tooltip="{{localize "WITCHER.Weapon.Type"}}">
                             <i class="fa-solid fa-scroll"></i>
                             {{diagram.system.type}}
@@ -70,7 +70,7 @@
                             <i class="fa-solid fa-arrow-trend-up"></i>
                             {{diagram.system.investment}}
                         </span>
-                </div>
+                    </div>
                 {{#if diagram.system.description}}
                     <div class="list-item-description">
                         <h3>{{localize "WITCHER.Item.Description"}}</h3>

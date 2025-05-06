@@ -199,4 +199,9 @@ export async function registerHandelbarHelpers() {
     Handlebars.registerHelper('getValue', function(obj, key) {
         return obj[key];
     });
+
+    Handlebars.registerHelper('capitalize', function (str) {
+        if (typeof str !== 'string') return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    });
 }
