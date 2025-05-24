@@ -1,16 +1,11 @@
 <details open>
     <summary class="list-header valuables-list-header">
-        <i class="fas fa-chevron-down chevron-icon"></i>
-        <h3>{{header}}</h3>
-        <div class="list-label">
-            <span>{{localize "WITCHER.table.Quantity"}}</span>
-            <span>{{localize "WITCHER.Diagram.Learned"}}</span>
-        </div>
+        {{> "systems/TheWitcherTRPG/templates/sheets/actor/partials/character/inventory/inventory-items-summary.hbs" header=header hasQuantity=hasQuantity}}
     </summary>
 
     <ol class="list item-table item-list">
         {{#each diagrams as |diagram id|}}
-            <li class="item list-item" data-item-id="{{diagram._id}}">
+            <li class="item list-item" data-item-id="{{diagram.id}}">
                 <div class="list-details valuable-details">
                     <a class="item-display-info display-details">
                         <img class="item-image item-list-image" src="{{diagram.img}}">
@@ -81,34 +76,33 @@
                     <h3>{{localize "WITCHER.Diagram.components"}}</h3>
                 {{/if}}
                 {{#if diagram.system.craftingComponents}}
-                    {{#each (syncUuidDiagrams diagram.system.craftingComponents) as |component name|}}
-                        <div class="stored-item">
-                            <div class="stored-item-label">
-                                <img class="stored-item-img" src="{{component.img}}">
-                                <span>{{component.name}}</span>
-                                <span>{{getOwnedComponentCount ../../actor component.name}}</span>
-                                <span>/</span>
-                                <span>{{component.quantity}}</span>
-                            </div>
-                        </div>
+                    {{#each diagram.system.craftingComponents as |component name|}}
+                    <details class="stored-item">
+                        <summary class="stored-item-label">
+                            <img class="stored-item-img" src="{{component.img}}">
+                            <span>{{component.name}}</span>
+                            <span>{{getOwnedComponentCount ../../actor component.name}}</span>
+                            <span>/</span>
+                            <span>{{component.quantity}}</span>
+                        </summary>
+                    </details>
                     {{/each}}
                 {{/if}}
                 {{#if diagram.system.isFormulae}}
                     {{#each ../alchemyComponentsList as |component|}}
-                        {{#if (getValue diagram.system.alchemyComponents component.key)}}
-                            <div class="stored-item">
-                                <div class="stored-item-label">
+                        {{#if (lookup diagram.system.alchemyComponents component.key)}}
+                            <details class="stored-item">
+                                <summary class="stored-item-label">
                                     <img class="stored-item-img" src="systems/TheWitcherTRPG/assets/images/{{component.image}}">
                                     <span>{{localize (concat "WITCHER.Inventory." component.label)}}</span>
                                     <span>{{count}}</span>
                                     <span>/</span>
-                                    <span>{{getValue diagram.system.alchemyComponents component.key}}</span>
-                                </div>
-                            </div>
+                                    <span>{{lookup  diagram.system.alchemyComponents component.key}}</span>
+                                </summary>
+                            </details>
                         {{/if}}
                     {{/each}}
                 {{/if}}
-
                 </div>
             </li>
         {{/each}}

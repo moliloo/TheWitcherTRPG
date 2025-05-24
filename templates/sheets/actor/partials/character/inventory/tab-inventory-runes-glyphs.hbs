@@ -1,22 +1,11 @@
 <details open>
     <summary class="list-header valuables-list-header">
-        <i class="fas fa-chevron-down chevron-icon"></i>
-        <h3>{{header}}</h3>
-        <div class="list-label">
-            <span>{{localize "WITCHER.table.Quantity"}}</span>
-            {{#if itemType}}
-                <span>
-                    <a class="add-item" data-itemType="{{itemType}}">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                </span>
-            {{/if}}
-        </div>
+        {{> "systems/TheWitcherTRPG/templates/sheets/actor/partials/character/inventory/inventory-items-summary.hbs" header=header itemType=itemType hasQuantity=hasQuantity}}
     </summary>
 
     <ol class="list item-table item-list">
         {{#each enhancements as |enhancement id|}}
-            <li class="item list-item" data-item-id="{{enhancement._id}}">
+            <li class="item list-item" data-item-id="{{enhancement.id}}">
                 <div class="list-details valuable-details">
                     <a class="item-display-info display-details">
                         <img class="item-image item-list-image" src="{{enhancement.img}}">

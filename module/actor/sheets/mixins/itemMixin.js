@@ -287,14 +287,6 @@ export let itemMixin = {
         editor.toggleClass('invisible');
     },
 
-    _openContainerList(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        let section = event.currentTarget.closest('.stored-item');
-        let editor = $(section).find('.stored-item-info');
-        editor.toggleClass('invisible');
-    },
-
     async _onItemRoll(event) {
         this.actor.useItem(event.currentTarget.closest('.item').dataset.itemId, {
             alt: event?.altKey,
@@ -328,7 +320,7 @@ export let itemMixin = {
             item: item,
             type: item.type,
             config: WITCHER
-        }
+        };
 
         ChatMessage.create({
             content: await renderTemplate(
@@ -357,13 +349,13 @@ export let itemMixin = {
         html.find('.weapon-list-display').on('click', this._onDisplayList.bind(this));
 
         html.find('.item-weapon-display').on('click', this._onItemDisplayInfo.bind(this));
+        html.find('.item-armor-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-display-info').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-valuable-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-spell-display').on('click', this._onItemDisplayInfo.bind(this));
         html.find('.item-substance-display').on('click', this._onSubstanceDisplay.bind(this));
 
         html.find('.enhancement-label').on('click', this._onEnhancementInfo.bind(this));
-        html.find('.stored-item-label').on('click', this._openContainerList.bind(this));
 
         html.find('.spell-display').on('click', this._onSpellDisplay.bind(this));
 

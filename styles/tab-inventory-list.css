@@ -55,7 +55,7 @@ details[open] .list-header > .chevron-icon {
     gap: 15px;
 }
 
-.list-label > span { 
+.list-label > span {
     width: 70px;
     text-align: center;
     padding: 5px;
@@ -171,12 +171,12 @@ details[open] .list-header > .chevron-icon {
     gap: 5px;
 }
 
-a.item-equip,
-a.item-repair,
-a.item-chat,
-a.item-carried,
-a.item-learned,
-a.crafting-craft {
+.item-equip,
+.item-repair,
+.item-chat,
+.item-carried,
+.item-learned,
+.crafting-craft {
     color: rgba(25, 25, 25, 0.4);
     text-shadow: none;
 }
@@ -185,3 +185,32 @@ a.equipped {
     color: var(--color-text-dark-primary);
     text-shadow: none;
 }
+
+.toggle-hand-icon {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.toggle-hand-icon input[type='checkbox'] {
+    position: absolute;
+    opacity: 1; /* invisível, mas ainda clicável */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin: 0;
+    cursor: pointer;
+    z-index: 44;
+}
+
+.toggle-hand-icon:not(.equipped) {
+    color: rgba(25, 25, 25, 0.4);
+    text-shadow: none;
+}
+
+.toggle-hand-icon:has(.equipped) {
+    color: var(--color-text-dark-primary);
+    text-shadow: none;
+}
+

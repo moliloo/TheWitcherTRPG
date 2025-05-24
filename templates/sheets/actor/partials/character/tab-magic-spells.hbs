@@ -1,22 +1,11 @@
 <details open>
     <summary class="list-header spell-list-header">
-        <i class="fas fa-chevron-down chevron-icon"></i>
-        <h3>{{header}}</h3>
-        <div class="list-label">
-            <span>{{localize "WITCHER.Spell.Short.StaCost"}}</span>
-            {{#if itemType}}
-                <span>
-                    <a class="add-item" data-itemType="{{itemType}}" data-spellType="{{subtype}}">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                </span>
-            {{/if}}
-        </div>
+        {{> "systems/TheWitcherTRPG/templates/sheets/actor/partials/character/inventory/inventory-items-summary.hbs" header=header itemType=itemType subtype=subtype}}
     </summary>
 
     <ol class="list item-table item-list">
         {{#each spells as |spell id|}}
-            <li class="item list-item" data-item-id="{{spell._id}}">
+            <li class="item list-item" data-item-id="{{spell.id}}">
                 <div class="list-details spell-details">
                     <a class="item-display-info display-details">
                         <img class="item-image item-list-image" src="{{spell.img}}">
@@ -117,12 +106,12 @@
                         {{#if spell.system.alternateRitualComponents}}
                             <h3>{{localize "WITCHER.Spell.Ritual.alternateComponents"}}</h3>
                             {{#each spell.system.alternateRitualComponents as |component name|}}
-                                <div class="stored-item" data-item-id="{{component.name}}">
-                                    <div class="stored-item-label">
+                                <details class="stored-item" data-item-id="{{component.name}}">
+                                    <summary>
                                         <img class="stored-item-img" src="{{component.item.img}}">
                                         <span>{{component.item.name}}</span>
-                                    </div>
-                                    <div class="stored-item-info invisible">
+                                    </summary>
+                                    <div class="stored-item-info">
                                         <div class="item-tags">
                                             {{#if component.item.system.type}}
                                                 <span class="item-tag" data-tooltip="{{localize "WITCHER.Weapon.Type"}}">
@@ -166,7 +155,7 @@
                                             <span><b>{{localize "WITCHER.Component.Location"}}:</b> {{component.item.system.location}}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </details>
                             {{/each}}
                         {{/if}}
                     </div>

@@ -1,22 +1,11 @@
 <details open>
     <summary class="list-header valuables-list-header">
-        <i class="fas fa-chevron-down chevron-icon"></i>
-        <h3>{{header}}</h3>
-        <div class="list-label">
-            <span>{{localize "WITCHER.table.Quantity"}}</span>
-            {{#if itemType}}
-                <span>
-                    <a class="add-item" data-itemType="{{itemType}}">
-                        <i class="fas fa-plus"></i>
-                    </a>
-                </span>
-            {{/if}}
-        </div>
+        {{> "systems/TheWitcherTRPG/templates/sheets/actor/partials/character/inventory/inventory-items-summary.hbs" header=header itemType=itemType hasQuantity=hasQuantity}}
     </summary>
 
     <ol class="list item-table item-list">
         {{#each valuables as |valuable id|}}
-            <li class="item list-item" data-item-id="{{valuable._id}}">
+            <li class="item list-item" data-item-id="{{valuable.id}}">
                 <div class="list-details valuable-details">
                     <a class="item-display-info display-details">
                         <img class="item-image item-list-image" src="{{valuable.img}}">
@@ -35,7 +24,7 @@
                             <a class="item-carried {{#if valuable.system.isCarried}}equipped{{/if}}" data-tooltip="{{#if valuable.system.isCarried}}
                                 {{localize 'WITCHER.Item.Carried'}}
                             {{else}}
-                                {{localize 'WITCHER.Item.NotCarried'}}
+                                {{localize 'WITCHER.Item.notCarried'}}
                             {{/if}}">
                                 <i class="{{#if valuable.system.isCarried}}fa-solid{{else}}fa-regular{{/if}} fa-hand"></i>
                             </a>
@@ -81,26 +70,27 @@
                         </div>
                         <div class="container-stored-item">
                             {{#each valuable.system.itemContent as |storedItem|}}
-                                <div class="stored-item" data-item-id="{{storedItem.uuid}}">
-                                    <div class="stored-item-label">
-                                        <img class="stored-item-img" src="{{storedItem.img}}">
-                                        <span>{{storedItem.name}}</span>
+                            <details class="stored-item" data-item-id="{{storedItem.uuid}}">
+                                <summary class="stored-item-label">
+                                    <img class="stored-item-img" src="{{storedItem.img}}">
+                                    <span>{{storedItem.name}}</span>
+                                </summary>
+                                <div class="stored-item-info">
+                                    <div class="item-tags">
+                                        <span class="item-tag" data-tooltip="{{localize "WITCHER.Item.Weight"}}">
+                                            <i class="fa-solid fa-weight-hanging"></i>
+                                            {{storedItem.weight}}
+                                        </span>
                                     </div>
-                                    <div class="stored-item-info invisible">
-                                        <div class="item-tags">
-                                            <span class="item-tag" data-tooltip="{{localize "WITCHER.Item.Weight"}}">
-                                                <i class="fa-solid fa-weight-hanging"></i>
-                                                {{storedItem.weight}}
-                                            </span>
+                                    {{#if storedItem.description}}
+                                        <div class="list-item-description">
+                                            <h3>{{localize "WITCHER.Item.Description"}}</h3>
+                                            {{storedItem.description}}
                                         </div>
-                                        {{#if storedItem.description}}
-                                            <div class="list-item-description">
-                                                <h3>{{localize "WITCHER.Item.Description"}}</h3>
-                                                {{storedItem.description}}
-                                            </div>
-                                        {{/if}}
-                                    </div>
+                                    {{/if}}
                                 </div>
+                            </details>
+                                
                             {{/each}}
                         </div>
                     {{/if}}

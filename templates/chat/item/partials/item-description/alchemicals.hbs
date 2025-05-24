@@ -1,0 +1,19 @@
+<section>
+    {{#if (or (eq type 'alchemical') (eq type 'mutagen'))}}
+        {{#if effect}}
+            <div class="list-item-description">
+                <h4>{{localize "WITCHER.Item.Description"}}</h4>
+                <span>{{#if (eq type 'mutagen')}}<b>{{localize "WITCHER.Item.Effect"}}: </b>{{/if}} {{effect}}</span>
+            </div>
+        {{/if}}
+        {{#if minorMutation}}
+            <span><b>{{localize "WITCHER.Mutagen.MinorMutation"}}: </b>{{minorMutation}}</span>
+        {{/if}}
+    {{/if}}
+    {{#if (eq type 'component')}}
+        <div class="list-item-description">
+            <h4>{{localize "WITCHER.Item.Description"}}</h4>
+            <span><b>{{localize "WITCHER.Component.Location"}}:</b> {{location}}</span>
+        </div>
+    {{/if}}
+</section>

@@ -238,7 +238,6 @@
             "Large": "L",
             "CantHide": "NA",
             "containerItems": "Container Items",
-
             "ConsumeProperties": {
                 "doesHeal": "Applies heal",
                 "heal": "Heals for",
