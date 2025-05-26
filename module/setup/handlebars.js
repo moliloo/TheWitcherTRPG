@@ -70,7 +70,7 @@ export async function preloadHandlebarsTemplates() {
         'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/alchemicals.hbs',
         'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/crafting-items.hbs',
         'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/description.hbs',
-        'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/spell.hbs',
+        'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/spell-description.hbs',
         'systems/TheWitcherTRPG/templates/chat/item/partials/item-description/tags.hbs',
 
         'systems/TheWitcherTRPG/templates/partials/components-list.hbs'
@@ -147,44 +147,85 @@ export async function registerHandelbarHelpers() {
         return set.has(value);
     });
 
-    Handlebars.registerHelper("armorPartsInfo", function (armor) {
+    Handlebars.registerHelper('armorPartsInfo', function (armor) {
         const location = armor.location;
         const parts = [
-            { key: "head", name: game.i18n.localize('WITCHER.Location.Head'), stopping: "headStopping", max: "headMaxStopping", icon: "fa-helmet-safety" },
-            { key: "torso", name: game.i18n.localize('WITCHER.Location.Torso'), stopping: "torsoStopping", max: "torsoMaxStopping", icon: "fa-shirt" },
-            { key: "leftHand", name: game.i18n.localize('WITCHER.Location.leftArm'), stopping: "leftArmStopping", max: "leftArmMaxStopping", icon: "fa-hand" },
-            { key: "rightHand", name: game.i18n.localize('WITCHER.Location.rightArm'), stopping: "rightArmStopping", max: "rightArmMaxStopping", icon: "fa-hand-back-fist" },
-            { key: "leftLeg", name: game.i18n.localize('WITCHER.Location.rightLeg'), stopping: "leftLegStopping", max: "leftLegMaxStopping", icon: "fa-shoe-prints" },
-            { key: "rightLeg", name: game.i18n.localize('WITCHER.Location.leftLeg'), stopping: "rightLegStopping", max: "rightLegMaxStopping", icon: "fa-shoe-prints" },
-            { key: "shield", name: game.i18n.localize('WITCHER.Actor.Shield'), stopping: "reliability", max: "reliabilityMax", icon: "fa-shield" }
-            
+            {
+                key: 'head',
+                name: game.i18n.localize('WITCHER.Location.Head'),
+                stopping: 'headStopping',
+                max: 'headMaxStopping',
+                icon: 'fa-helmet-safety'
+            },
+            {
+                key: 'torso',
+                name: game.i18n.localize('WITCHER.Location.Torso'),
+                stopping: 'torsoStopping',
+                max: 'torsoMaxStopping',
+                icon: 'fa-shirt'
+            },
+            {
+                key: 'leftHand',
+                name: game.i18n.localize('WITCHER.Location.leftArm'),
+                stopping: 'leftArmStopping',
+                max: 'leftArmMaxStopping',
+                icon: 'fa-hand'
+            },
+            {
+                key: 'rightHand',
+                name: game.i18n.localize('WITCHER.Location.rightArm'),
+                stopping: 'rightArmStopping',
+                max: 'rightArmMaxStopping',
+                icon: 'fa-hand-back-fist'
+            },
+            {
+                key: 'leftLeg',
+                name: game.i18n.localize('WITCHER.Location.rightLeg'),
+                stopping: 'leftLegStopping',
+                max: 'leftLegMaxStopping',
+                icon: 'fa-shoe-prints'
+            },
+            {
+                key: 'rightLeg',
+                name: game.i18n.localize('WITCHER.Location.leftLeg'),
+                stopping: 'rightLegStopping',
+                max: 'rightLegMaxStopping',
+                icon: 'fa-shoe-prints'
+            },
+            {
+                key: 'shield',
+                name: game.i18n.localize('WITCHER.Actor.Shield'),
+                stopping: 'reliability',
+                max: 'reliabilityMax',
+                icon: 'fa-shield'
+            }
         ];
-    
-        const fullCover = location === "FullCover";
+
+        const fullCover = location === 'FullCover';
         const protections = {
-            Head: ["head"],
-            Torso: ["torso", "leftHand", "rightHand"],
-            Leg: ["leftLeg", "rightLeg"],
-            Shield: ["shield"]
+            Head: ['head'],
+            Torso: ['torso', 'leftHand', 'rightHand'],
+            Leg: ['leftLeg', 'rightLeg'],
+            Shield: ['shield']
         };
-    
-        const isCovered = (partKey) => {
-            if (fullCover) return partKey !== "shield";
+
+        const isCovered = partKey => {
+            if (fullCover) return partKey !== 'shield';
             return protections[location]?.includes(partKey);
         };
-    
+
         return parts
             .filter(part => isCovered(part.key))
             .map(part => {
                 const current = armor[part.stopping] || 0;
                 const max = armor[part.max] || 0;
                 const percentage = max > 0 ? Math.round((current / max) * 100) : 0;
-    
-                let color = "gray";
-                if (percentage > 66) color = "green";
-                else if (percentage > 33) color = "orange";
-                else color = "red";
-    
+
+                let color = 'gray';
+                if (percentage > 66) color = 'green';
+                else if (percentage > 33) color = 'orange';
+                else color = 'red';
+
                 return {
                     ...part,
                     current,
@@ -201,3 +242,7 @@ export async function registerHandelbarHelpers() {
         return str.charAt(0).toUpperCase() + str.slice(1);
     });
 }
+
+Handlebars.registerHelper('log', function (context) {
+    console.log(context);
+});

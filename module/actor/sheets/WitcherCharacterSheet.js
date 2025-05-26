@@ -2,6 +2,7 @@ import WitcherActorSheet from './WitcherActorSheet.js';
 import { RollConfig } from '../../scripts/rollConfig.js';
 import { extendedRoll } from '../../scripts/rolls/extendedRoll.js';
 import ChatMessageData from '../../chatMessage/chatMessageData.js';
+import { alchemyMixin } from './mixins/alchemyMixin.js';
 
 export default class WitcherCharacterSheet extends WitcherActorSheet {
     uniqueTypes = ['profession', 'race', 'homeland'];
@@ -35,7 +36,7 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
         this._prepareSubstances(context);
         this._prepareAlchemy(context);
         this._prepareValuables(context);
-        context.alchemyComponentsList = this._prepareAlchemyComponentsList(context);
+        context.alchemyComponentsList = alchemyMixin._prepareAlchemyComponentsList(context);
 
         context.system.general.lifeEvents = Object.entries(context.system.general.lifeEvents).map(([key, value]) => ({
             key,
@@ -60,8 +61,7 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
 
     _prepareDiagramFormulas(context) {
         // Formulae
-        const diagrams = context.actor.getList('diagrams');
-        context.diagrams = diagrams.map(diagram => this.enrichDiagramComponents(diagram));
+        context.diagrams = context.actor.getList('diagrams');
         context.alchemicalItemDiagrams = context.diagrams
             .filter(d => d.system.type == 'alchemical' || !d.system.type)
             .map(this.sanitizeDescription);
@@ -91,27 +91,6 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
             .map(this.sanitizeDescription);
         context.bombDiagrams = context.diagrams.filter(d => d.system.type == 'bomb').map(this.sanitizeDescription);
         context.trapDiagrams = context.diagrams.filter(d => d.system.type == 'traps').map(this.sanitizeDescription);
-    }
-
-    enrichDiagramComponents(diagram) {
-        if (!diagram.system?.craftingComponents) return diagram;
-
-        diagram.system.craftingComponents = diagram.system.craftingComponents.map(component => {
-            if (!component.uuid) return component;
-
-            const resolvedItem = fromUuidSync(component.uuid);
-            if (!resolvedItem) return component;
-
-            return {
-                ...component,
-                name: resolvedItem.name,
-                img: resolvedItem.img,
-                type: resolvedItem.type,
-                quantity: component.quantity ?? 1
-            };
-        });
-
-        return diagram;
     }
 
     _prepareCrafting(context) {
@@ -177,20 +156,6 @@ export default class WitcherCharacterSheet extends WitcherActorSheet {
 
         context.mounts = items.filter(i => i.type == 'mount');
         context.mountAccessories = items.filter(i => i.type == 'valuable' && i.system.type == 'mount-accessories');
-    }
-
-    _prepareAlchemyComponentsList(context) {
-        return [
-            { key: 'vitriol', label: 'Vitriol', image: 'vitriol.png', count: context.vitriolCount },
-            { key: 'rebis', label: 'Rebis', image: 'rebis.png', count: context.rebisCount },
-            { key: 'aether', label: 'Aether', image: 'aether.png', count: context.aetherCount },
-            { key: 'quebrith', label: 'Quebrith', image: 'quebrith.png', count: context.quebrithCount },
-            { key: 'hydragenum', label: 'Hydragenum', image: 'hydragenum.png', count: context.hydragenumCount },
-            { key: 'vermilion', label: 'Vermilion', image: 'vermilion.png', count: context.vermilionCount },
-            { key: 'sol', label: 'Sol', image: 'sol.png', count: context.solCount },
-            { key: 'caelum', label: 'Caelum', image: 'caelum.png', count: context.caelumCount },
-            { key: 'fulgur', label: 'Fulgur', image: 'fulgur.png', count: context.fulgurCount }
-        ];
     }
 
     async _alchemyCraft(event) {

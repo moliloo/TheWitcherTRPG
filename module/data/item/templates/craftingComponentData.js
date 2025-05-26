@@ -4,7 +4,6 @@ export default function craftingComponent() {
     return {
         id: new fields.StringField({ initial: () => foundry.utils.randomID() }),
         name: new fields.StringField({ initial: '' }),
-        img: new fields.StringField({ initial: '' }),
         quantity: new fields.NumberField({ initial: 0 }),
         uuid: new fields.DocumentUUIDField()
     };

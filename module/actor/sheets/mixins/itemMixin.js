@@ -327,7 +327,7 @@ export let itemMixin = {
                 'systems/TheWitcherTRPG/templates/chat/item/item-description.hbs',
                 dialogData
             ),
-            speaker: ChatMessage.getSpeaker({ actor: game.actors.getName(this.actor.name) }),
+            speaker: ChatMessage.getSpeaker({ actor: this.actor.name }),
             type: CONST.CHAT_MESSAGE_TYPES.IC
         });
     },
